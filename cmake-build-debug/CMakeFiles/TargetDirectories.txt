@@ -1,0 +1,3 @@
+/home/p3rfect/WeakLink/server/cmake-build-debug/CMakeFiles/WeakLink.dir
+/home/p3rfect/WeakLink/server/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/p3rfect/WeakLink/server/cmake-build-debug/CMakeFiles/rebuild_cache.dir
