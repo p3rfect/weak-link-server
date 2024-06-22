@@ -14,15 +14,15 @@ bool UserService::register_user(User user){
     return true;
 }
 
-bool UserService::login(User &user) {
-    if (!user_repository->user_exist(user)) return false;
+User UserService::login(User &user) {
+    if (!user_repository->user_exist(user)) return User(0, user.username, user.password, user.master);
     User actual_user = user_repository->get_user_by_username(user.username);
     if (user.password == actual_user.password){
         user = actual_user;
-        return true;
+        return actual_user;
     }
     else{
-        return false;
+        return User(0, user.username, user.password, user.master);
     }
 }
 
@@ -32,4 +32,8 @@ void UserService::update_user_pic(const User& user, const std::string& path_to_p
 
 std::string UserService::get_path_to_pic(const std::string &username) {
     return user_repository->get_user_by_username(username).get_path_to_pic();
+}
+
+User UserService::get_user_by_username(const std::string &username) {
+    return user_repository->get_user_by_username(username);
 }

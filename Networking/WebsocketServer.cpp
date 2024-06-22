@@ -82,18 +82,21 @@ void WebsocketServer::send_message(ClientConnection conn, const std::string &mes
     this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data), websocketpp::frame::opcode::text);
 }
 
-void WebsocketServer::broadcast_message(std::vector<ClientConnection*> conns, const std::string &message_type,
+void WebsocketServer::broadcast_message(std::vector<ClientConnection> conns, const std::string &message_type,
                                         const Json::Value &arguments) {
     Json::Value message_data = arguments;
     message_data[MESSAGE_TYPE_FIELD] = message_type;
 
     for (auto& conn : conns){
-        this->endpoint.send(std::move(*conn), WebsocketServer::stringify_json(message_data), websocketpp::frame::opcode::text);
+        this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data), websocketpp::frame::opcode::text);
     }
 }
 
 void WebsocketServer::on_message(const ClientConnection& conn, const WebsocketEndpoint::message_ptr& message) {
     Json::Value message_object = WebsocketServer::parse_json(message->get_payload());
+    for (auto& key : message_object.getMemberNames()){
+        std::cout << "\t" << key << ": " << message_object[key] << '\n';
+    }
     if (!message_object.isNull() && message_object.isMember(MESSAGE_TYPE_FIELD)){
         std::string message_type = message_object[MESSAGE_TYPE_FIELD].asString();
         message_object.removeMember(MESSAGE_TYPE_FIELD);

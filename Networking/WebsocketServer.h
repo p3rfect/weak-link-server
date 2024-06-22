@@ -30,7 +30,7 @@ public:
 
     void send_message(ClientConnection conn, const std::string& message_type, const Json::Value& arguments);
 
-    void broadcast_message(std::vector<ClientConnection*> conns, const std::string& message_type, const Json::Value& arguments);
+    void broadcast_message(std::vector<ClientConnection> conns, const std::string& message_type, const Json::Value& arguments);
 private:
     static Json::Value parse_json(const std::string& json);
     static std::string stringify_json(const Json::Value& value);

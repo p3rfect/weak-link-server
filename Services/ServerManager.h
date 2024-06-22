@@ -11,6 +11,8 @@
 #include "../Adapters/JsonGameAdapter.h"
 #include "../Networking/WebsocketServer.h"
 #include "ImageService.h"
+#include <vector>
+#include <string>
 
 class ServerManager {
 public:
@@ -26,10 +28,14 @@ private:
     void accept_answer_handler(ClientConnection conn, Json::Value message);
     void commit_to_bank_handler(ClientConnection conn, Json::Value message);
     void finish_round_handler(ClientConnection conn, Json::Value message);
-    void let_strongest_player_eliminate_handler(ClientConnection conn, Json::Value message);
     void eliminate_player_handler(ClientConnection conn, Json::Value message);
     void change_user_pic_handler(ClientConnection conn, Json::Value message);
     void get_user_pic_handler(ClientConnection conn, Json::Value message);
+    void set_conn(ClientConnection conn, Json::Value message);
+    void set_poll_result(ClientConnection conn, Json::Value message);
+    void request_poll_result(ClientConnection conn, Json::Value message);
+    void strongest_player_eliminate_handler(ClientConnection conn, Json::Value message);
+    void request_eliminate(ClientConnection conn, Json::Value message);
 
 
     UserService* user_service;
