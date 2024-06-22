@@ -79,7 +79,13 @@ void WebsocketServer::send_message(ClientConnection conn, const std::string &mes
     Json::Value message_data = arguments;
     message_data[MESSAGE_TYPE_FIELD] = message_type;
 
-    this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data), websocketpp::frame::opcode::text);
+    try {
+        this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data),
+                            websocketpp::frame::opcode::text);
+    }
+    catch (...){
+        std::cerr << "Bad connection\n";
+    }
 }
 
 void WebsocketServer::broadcast_message(std::vector<ClientConnection> conns, const std::string &message_type,
@@ -87,8 +93,14 @@ void WebsocketServer::broadcast_message(std::vector<ClientConnection> conns, con
     Json::Value message_data = arguments;
     message_data[MESSAGE_TYPE_FIELD] = message_type;
 
-    for (auto& conn : conns){
-        this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data), websocketpp::frame::opcode::text);
+    try {
+        for (auto &conn: conns) {
+            this->endpoint.send(std::move(conn), WebsocketServer::stringify_json(message_data),
+                                websocketpp::frame::opcode::text);
+        }
+    }
+    catch (...){
+        std::cerr << "Bad connection\n";
     }
 }
 
